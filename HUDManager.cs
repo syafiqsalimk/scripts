@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
     public Image currentEnergy;
+    public Text time;
 
     private GameObject player;
 
@@ -30,30 +31,41 @@ public class HUDManager : MonoBehaviour
        input_x = player.GetComponent<pergerakan_player>().x;
        input_z = player.GetComponent<pergerakan_player>().z;
 
-       EnergyDrain();
-       UpdateEnergy();
+
+       UpdateTime();
+       
     }
 
-    private void EnergyDrain()
+   
+    private void UpdateTime()
     {
-        if(kecepatan == kecepatanLari)
+        int hours = EnviroSky.instance.GameTime.Hours;
+        int minutes = EnviroSky.instance.GameTime.Minutes;
+        string gameHours;
+        string gameMinutes;
+
+        if(hours >= 0 && hours < 10)
         {
-            if(input_x > 0 || input_z > 0)
-            {
-                energy -= 10 * Time.deltaTime;
-            }
-           
+            gameHours = "0" + hours.ToString();
         }
-        else 
+        else
         {
-            energy += 15 * Time.deltaTime;
+            gameHours = hours.ToString();
         }
 
+        if(minutes >= 0 && minutes < 10)
+        {
+            gameMinutes = "0" + minutes.ToString();
+        }
+        else
+        {
+            gameMinutes = minutes.ToString();
+        }
 
-    }
-    private void UpdateEnergy()
-    {
-        float ratio = energy / maxEnergy;
-        currentEnergy.rectTransform.localScale = new Vector3(ratio, 1, 1);
+        
+        
+        time.text = gameHours.ToString() + " : " + gameMinutes.ToString();
+
+
     }
 }
